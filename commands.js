@@ -22,4 +22,10 @@ const help = (args) => {
 	].join("\n");
 };
 
-export const commands = { theme, fontsize, help };
+const clear = (args) => {
+	document.getElementById("terminal-output").innerHTML = "";
+
+	return null;
+};
+
+export const commands = { theme, fontsize, help, clear };
