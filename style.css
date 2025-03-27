@@ -61,6 +61,12 @@ body {
 	/* margin: 20px; */
 }
 
+a {
+	text-decoration: none;
+	color: var(--output);
+	text-shadow: 0 0 2px var(--output);
+}
+
 .prompt {
 	color: var(--prompt);
 }

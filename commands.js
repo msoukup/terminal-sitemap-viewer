@@ -2,16 +2,16 @@ const welcome_ascii = `<pre>
          _nnnn_               
         dGGGGMMb              
        @p~qp~~qMb             
-       M|@||@) M|             Welcome to jonathanmlowery.com!
+       M|@||@) M|             Welcome to <a>jonathanmlowery.com</a>!
        @,----.JM|             This is an interactive terminal website built with plain HTML, CSS, and JS
       JS^\\__/  qKL            
      dZP        qKRb          To view a list of available commands, type 'help'
     dZP          qKKb         
-   fZP            SMMb        LinkedIn
-   HZM            MMMM        GitHub
-   FqM            MMMM        Resume
+   fZP            SMMb        <a href="https://www.linkedin.com/in/jonathan-lowery-724a7524a/ target="_blank"">LinkedIn</a>
+   HZM            MMMM        <a href="https://github.com/jonathanmlowery" target="_blank">GitHub</a>
+   FqM            MMMM        <a href="/resume.pdf" target="_blank">Resume</a>
  __| ".        |\\dS"qML      
- |    \`.       | \`' \\Zq       contact@jonathanmlowery.com
+ |    \`.       | \`' \\Zq       Email: <a href="mailto:contact@jonathanmlowery.com" target="_blank">contact@jonathanmlowery.com</a>
 _)      \\.___.,|     .'      
 \\____   )MMMMMP|   .'        
      \`-'       \`--'hjm      
@@ -36,13 +36,13 @@ const help = (args) => {
 	return (
 		"<pre>" +
 		[
-			"Informational Commands:",
-			"  help                 display this message",
-			"  welcome              display welcome message",
+			"Information:",
+			"  <a>help</a>                 display this message",
+			"  <a>welcome</a>              display welcome message",
 			"Appearance:",
-			"  theme (name)         change terminal theme (monokai, synthwave, dracula, matrix, solarized)",
-			"  fontsize (pixels)    change the terminal text size",
-			"  clear                clear previous terminal output",
+			"  <a>theme (name)</a>         change terminal theme (monokai, synthwave, dracula, matrix, solarized)",
+			"  <a>fontsize (pixels)</a>    change the terminal text size",
+			"  <a>clear</a>                clear previous terminal output",
 			"",
 		].join("\n") +
 		"</pre>"
