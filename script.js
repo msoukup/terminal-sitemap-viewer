@@ -31,6 +31,8 @@ const exec_command = (command) => {
 
 		output.appendChild(response);
 	}
+
+	document.getElementById("command-input").scrollIntoView({ block: "end" });
 };
 
 const command_input = document.getElementById("command-input");
@@ -49,6 +51,10 @@ command_input.addEventListener("keydown", (e) => {
 		exec_command(command_input.value);
 		command_input.value = "";
 		command_text.innerHTML = "";
+	}
+	if (e.ctrlKey && e.key.toLowerCase() === "l") {
+		e.preventDefault();
+		commands.clear("clear");
 	}
 });
 
