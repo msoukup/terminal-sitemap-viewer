@@ -1,0 +1,107 @@
+:root.theme-monokai {
+	--background: #272822;
+	--foreground: #f8f8f2;
+	--prompt: #66d9ef;
+	--command: #a6e22e;
+	--output: #f92672;
+	--dimmed: #75715e;
+}
+
+:root.theme-solarized {
+	--background: #002b36;
+	--foreground: #839496;
+	--prompt: #268bd2;
+	--command: #2aa198;
+	--output: #b58900;
+	--error: #dc322f;
+}
+
+:root.theme-synthwave {
+	--background: #0f0c29;
+	--foreground: #f8f8f2;
+	--prompt: #ff6ec7;
+	--command: #00fff7;
+	--output: #ffe347;
+	--error: #ff5555;
+}
+
+:root.theme-matrix {
+	--background: #000000;
+	--foreground: #00ff00;
+	--prompt: #00ff00;
+	--command: #00ff00;
+	--output: #00ff00;
+	--dimmed: #006600;
+}
+
+:root.theme-dracula {
+	--background: #282a36;
+	--foreground: #f8f8f2;
+	--prompt: #bd93f9;
+	--command: #50fa7b;
+	--output: #ff79c6;
+	--error: #ff5555;
+	--dimmed: #6272a4;
+}
+
+:root {
+	--terminal-font-size: 16px;
+}
+
+* {
+	font-family: monospace;
+	font-size: var(--terminal-font-size);
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: var(--background);
+	color: var(--foreground);
+	/* margin: 20px; */
+}
+
+.prompt {
+	color: var(--prompt);
+}
+
+.command {
+	color: var(--command);
+}
+
+.output {
+	color: var(--foreground);
+	white-space: pre-line;
+}
+
+.error {
+	color: var(--error);
+}
+
+.dimmed {
+	color: var(--dimmed);
+}
+
+.terminal-input {
+	display: flex;
+	align-items: center;
+}
+
+#command-input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.cursor {
+	display: inline-block;
+	width: 10px;
+	animation: blink 1s step-start infinite;
+	color: var(--command);
+}
+
+@keyframes blink {
+	50% {
+		opacity: 0;
+	}
+}
