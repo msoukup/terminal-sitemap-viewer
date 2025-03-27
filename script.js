@@ -32,6 +32,7 @@ const exec_command = (command) => {
 		output.appendChild(response);
 	}
 
+	// scrolls to bottom after command is run
 	document.getElementById("command-input").scrollIntoView({ block: "end" });
 };
 
