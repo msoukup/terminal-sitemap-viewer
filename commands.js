@@ -7,7 +7,7 @@ const welcome_ascii = `<pre>
       JS^\\__/  qKL            
      dZP        qKRb          To view a list of available commands, type 'help'
     dZP          qKKb         
-   fZP            SMMb        <a href="https://www.linkedin.com/in/jonathan-lowery-724a7524a/ target="_blank"">LinkedIn</a>
+   fZP            SMMb        <a href="https://www.linkedin.com/in/jonathan-lowery-724a7524a/" target="_blank">LinkedIn</a>
    HZM            MMMM        <a href="https://github.com/jonathanmlowery" target="_blank">GitHub</a>
    FqM            MMMM        <a href="/resume.pdf" target="_blank">Resume</a>
  __| ".        |\\dS"qML      
@@ -39,6 +39,7 @@ const help = (args) => {
 			"Information:",
 			"  <a>help</a>                 display this message",
 			"  <a>welcome</a>              display welcome message",
+			"  <a>certs</a>                view certifications",
 			"Appearance:",
 			"  <a>theme (name)</a>         change terminal theme (monokai, synthwave, dracula, matrix, solarized)",
 			"  <a>fontsize (pixels)</a>    change the terminal text size",
@@ -59,4 +60,16 @@ const welcome = (args) => {
 	return welcome_ascii;
 };
 
-export const commands = { theme, fontsize, help, clear, welcome };
+const certs = (args) => {
+	return (
+		"<pre>" +
+		[
+			"Python Institute PCAP",
+			"Comptia A+",
+			"Comptia Network+ <a>(coming soon)</a>",
+		].join("\n") +
+		"</pre>"
+	);
+};
+
+export const commands = { theme, fontsize, help, clear, welcome, certs };
