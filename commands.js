@@ -3,8 +3,8 @@ const welcome_ascii = `<pre>
         dGGGGMMb              
        @p~qp~~qMb             
        M|@||@) M|             Welcome to jonathanmlowery.com!
-       @,----.JM|             This is an interactive terminal website built with
-      JS^\\__/  qKL            plain HTML, CSS, and JS
+       @,----.JM|             This is an interactive terminal website built with plain HTML, CSS, and JS
+      JS^\\__/  qKL            
      dZP        qKRb          To view a list of available commands, type 'help'
     dZP          qKKb         
    fZP            SMMb        LinkedIn
@@ -33,12 +33,20 @@ const fontsize = (args) => {
 };
 
 const help = (args) => {
-	return [
-		"List of commands:",
-		"help              -> displays this message",
-		"theme (name)      -> changes terminal theme",
-		"fontsize (pixels) -> changes the terminal text size",
-	].join("\n");
+	return (
+		"<pre>" +
+		[
+			"Informational Commands:",
+			"  help                 display this message",
+			"  welcome              display welcome message",
+			"Appearance:",
+			"  theme (name)         change terminal theme (monokai, synthwave, dracula, matrix, solarized)",
+			"  fontsize (pixels)    change the terminal text size",
+			"  clear                clear previous terminal output",
+			"",
+		].join("\n") +
+		"</pre>"
+	);
 };
 
 const clear = (args) => {

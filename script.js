@@ -10,7 +10,7 @@ const exec_command = (command) => {
 	command_text.classList.add("command");
 	command_text.innerText = command;
 
-	prompt_line.innerText = "user@terminal-website$\u00A0";
+	prompt_line.innerText = "user@jonathanmlowery.com$\u00A0";
 	prompt_line.appendChild(command_text);
 	output.appendChild(prompt_line);
 
