@@ -27,7 +27,8 @@ const exec_command = (command) => {
 
 	if (command_output) {
 		response.classList.add("output");
-		response.textContent = command_output;
+		response.textContent = command_output.replace(/ /g, "\u00A0");
+
 		output.appendChild(response);
 	}
 };

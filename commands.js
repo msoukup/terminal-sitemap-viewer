@@ -16,8 +16,8 @@ const fontsize = (args, response) => {
 const help = (args) => {
 	return [
 		"List of commands:",
-		"help -> displays this message",
-		"theme (name) -> changes terminal theme",
+		"help              -> displays this message",
+		"theme (name)      -> changes terminal theme",
 		"fontsize (pixels) -> changes the terminal text size",
 	].join("\n");
 };
