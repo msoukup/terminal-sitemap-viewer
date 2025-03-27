@@ -1,8 +1,8 @@
 import { commands } from "/commands.js";
 
-const exec_command = (command) => {
-	const output = document.getElementById("terminal-output");
+const output = document.getElementById("terminal-output");
 
+const exec_command = (command) => {
 	const prompt_line = document.createElement("p");
 	prompt_line.classList.add("prompt");
 
@@ -27,7 +27,7 @@ const exec_command = (command) => {
 
 	if (command_output) {
 		response.classList.add("output");
-		response.textContent = command_output.replace(/ /g, "\u00A0");
+		response.innerHTML = command_output.replace(/\n/g, "<br />");
 
 		output.appendChild(response);
 	}
@@ -52,4 +52,15 @@ command_input.addEventListener("keydown", (e) => {
 	}
 });
 
-commands.theme(["theme", "dracula"], {});
+commands.theme(["theme", "monokai"]);
+
+const response = document.createElement("p");
+let command_output;
+command_output = commands.welcome(["welcome"]);
+
+if (command_output) {
+	response.classList.add("output");
+	response.innerHTML = command_output.replace(/\n/g, "<br />");
+
+	output.appendChild(response);
+}

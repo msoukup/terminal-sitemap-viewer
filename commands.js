@@ -1,10 +1,29 @@
-const theme = (args, response) => {
+const welcome_ascii = `<pre>
+         _nnnn_               
+        dGGGGMMb              
+       @p~qp~~qMb             
+       M|@||@) M|             Welcome to jonathanmlowery.com!
+       @,----.JM|             This is an interactive terminal website built with
+      JS^\\__/  qKL            plain HTML, CSS, and JS
+     dZP        qKRb          To view a list of available commands, type 'help'
+    dZP          qKKb         
+   fZP            SMMb        LinkedIn
+   HZM            MMMM        GitHub
+   FqM            MMMM        Resume
+ __| ".        |\\dS"qML      
+ |    \`.       | \`' \\Zq       contact@jonathanmlowery.com
+_)      \\.___.,|     .'      
+\\____   )MMMMMP|   .'        
+     \`-'       \`--'hjm      
+</pre>`;
+
+const theme = (args) => {
 	document.documentElement.className = `theme-${args[1]}`;
 
 	return null;
 };
 
-const fontsize = (args, response) => {
+const fontsize = (args) => {
 	document.documentElement.style.setProperty(
 		"--terminal-font-size",
 		`${args[1]}px`
@@ -28,4 +47,8 @@ const clear = (args) => {
 	return null;
 };
 
-export const commands = { theme, fontsize, help, clear };
+const welcome = (args) => {
+	return welcome_ascii;
+};
+
+export const commands = { theme, fontsize, help, clear, welcome };
