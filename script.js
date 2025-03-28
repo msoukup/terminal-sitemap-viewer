@@ -68,6 +68,13 @@ command_input.addEventListener("keydown", (e) => {
 			command_text.innerHTML = command_history[command_index];
 		}
 
+		requestAnimationFrame(() => {
+			command_input.setSelectionRange(
+				command_input.value.length,
+				command_input.value.length
+			);
+		});
+
 		console.log(command_history);
 		console.log(command_index);
 	} else if (e.key === "ArrowDown") {
@@ -80,6 +87,13 @@ command_input.addEventListener("keydown", (e) => {
 			command_input.value = "";
 			command_text.innerHTML = "";
 		}
+
+		requestAnimationFrame(() => {
+			command_input.setSelectionRange(
+				command_input.value.length,
+				command_input.value.length
+			);
+		});
 
 		console.log(command_history);
 		console.log(command_index);
