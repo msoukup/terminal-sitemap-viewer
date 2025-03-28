@@ -5,7 +5,7 @@ const welcome_ascii = `<pre>
        M|@||@) M|             Welcome to <a>jonathanmlowery.com</a>!
        @,----.JM|             This is an interactive terminal website built with plain HTML, CSS, and JS
       JS^\\__/  qKL            
-     dZP        qKRb          To view a list of available commands, type 'help'
+     dZP        qKRb          To view a list of available commands, type '<a>help</a>'
     dZP          qKKb         
    fZP            SMMb        JavaScript | Python | Java | C++
    HZM            MMMM        <a href="https://www.linkedin.com/in/jonathan-lowery-724a7524a/" target="_blank">LinkedIn  </a> | <a href="https://github.com/jonathanmlowery" target="_blank">GitHub</a> | <a href="/resume.pdf" target="_blank">Resume</a>
