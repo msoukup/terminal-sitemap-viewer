@@ -53,8 +53,12 @@ command_input.addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {
 		e.preventDefault();
 		exec_command(command_input.value);
-		command_history.push(command_input.value);
-		command_index = command_history.length;
+
+		if (command_input.value) {
+			command_history.push(command_input.value);
+			command_index = command_history.length;
+		}
+
 		command_input.value = "";
 		command_text.innerHTML = "";
 	} else if (e.ctrlKey && e.key.toLowerCase() === "l") {
