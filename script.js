@@ -46,16 +46,43 @@ command_input.addEventListener("input", () => {
 	command_text.innerHTML = safeText;
 });
 
+let command_history = [];
+let command_index = 1;
+
 command_input.addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {
 		e.preventDefault();
 		exec_command(command_input.value);
+		command_history.push(command_input.value);
+		command_index = command_history.length;
 		command_input.value = "";
 		command_text.innerHTML = "";
-	}
-	if (e.ctrlKey && e.key.toLowerCase() === "l") {
+	} else if (e.ctrlKey && e.key.toLowerCase() === "l") {
 		e.preventDefault();
 		commands.clear("clear");
+	} else if (e.key === "ArrowUp") {
+		command_index = Math.max(0, command_index - 1);
+
+		if (command_history[command_index]) {
+			command_input.value = command_history[command_index];
+			command_text.innerHTML = command_history[command_index];
+		}
+
+		console.log(command_history);
+		console.log(command_index);
+	} else if (e.key === "ArrowDown") {
+		command_index = Math.min(command_history.length, command_index + 1);
+
+		if (command_history[command_index]) {
+			command_input.value = command_history[command_index];
+			command_text.innerHTML = command_history[command_index];
+		} else {
+			command_input.value = "";
+			command_text.innerHTML = "";
+		}
+
+		console.log(command_history);
+		console.log(command_index);
 	}
 });
 
