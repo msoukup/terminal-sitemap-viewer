@@ -63,11 +63,7 @@ const welcome = (args) => {
 const certs = (args) => {
 	return (
 		"<pre>" +
-		[
-			"Python Institute PCAP",
-			"Comptia A+",
-			"Comptia Network+ <a>(coming soon)</a>",
-		].join("\n") +
+		["Python Institute PCAP", "Comptia A+", "Comptia Network+"].join("\n") +
 		"</pre>"
 	);
 };
