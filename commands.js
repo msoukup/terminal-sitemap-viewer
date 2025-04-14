@@ -7,12 +7,12 @@ const welcome_ascii = `<pre>
       JS^\\__/  qKL            
      dZP        qKRb          To view a list of available commands, type '<a>help</a>'
     dZP          qKKb         
-   fZP            SMMb        JavaScript | Python | Java | C++
-   HZM            MMMM        <a href="https://www.linkedin.com/in/jonathan-lowery-724a7524a/" target="_blank">LinkedIn  </a> | <a href="https://github.com/jonathanmlowery" target="_blank">GitHub</a> | <a href="/resume.pdf" target="_blank">Resume</a>
-   FqM            MMMM        Comptia A+ | PCAP
- __| ".        |\\dS"qML      
- |    \`.       | \`' \\Zq       Email: <a href="mailto:contact@jonathanmlowery.com" target="_blank">contact@jonathanmlowery.com</a>
-_)      \\.___.,|     .'      
+   fZP            SMMb        Javascript | <a href="https://www.linkedin.com/in/jonathan-lowery-724a7524a/" target="_blank">LinkedIn</a> | Python Institute PCAP
+   HZM            MMMM        Python     | <a href="https://github.com/jonathanmlowery" target="_blank">GitHub</a>   | Comptia A+
+   FqM            MMMM        Java       | <a href="/resume.pdf" target="_blank">Resume</a>   | Comptia Network+
+ __| ".        |\\dS"qML       C++        |          |
+ |    \`.       | \`' \\Zq       
+_)      \\.___.,|     .'       Email: <a href="mailto:contact@jonathanmlowery.com" target="_blank">contact@jonathanmlowery.com</a>
 \\____   )MMMMMP|   .'        
      \`-'       \`--'hjm      
 </pre>`;
