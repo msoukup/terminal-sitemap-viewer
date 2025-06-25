@@ -1,0 +1,4 @@
+= Terminal Sitemap Viewer
+
+Interactive terminal sitemap viewer built with plain HTML, CSS and JS.
+Code is derived from https://github.com/jonathanmlowery/terminal-website[this project by `jonathanmlowery`].
