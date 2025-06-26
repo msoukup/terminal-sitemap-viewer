@@ -35,7 +35,7 @@ const print = (content) => {
   output.appendChild(response);
 };
 
-const exec = (command) => {
+const exec = async (command) => {
 	const prompt_line = document.createElement("p");
 	prompt_line.classList.add("prompt");
 
@@ -50,8 +50,8 @@ const exec = (command) => {
 	const args = command.split(" ");
 	let command_output;
 	if (args[0] in commands) {
-    console.log(args[0]);
-		command_output = commands[args[0]](args);
+    console.log("Running command with args: " + args);
+		command_output = await commands[args[0]](args);
 	} else {
     command_output = args[0] + ": command not found";
   }
