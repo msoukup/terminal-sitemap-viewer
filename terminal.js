@@ -1,63 +1,51 @@
 import { commands } from "/commands.js";
 
-const user = "guest";
-const hostname = window.location.hostname;
+// Env object is passed to and returned from all commands.
 const output = document.getElementById("terminal-output");
-
-const welcome_ascii = `<pre>
-         _nnnn_
-        dGGGGMMb
-       @p~qp~~qMb
-       M|@||@) M|             Welcome!
-       @,----.JM|             This is an interactive sitemap viewer built with plain HTML, CSS, and JS
-      JS^\\__/  qKL
-     dZP        qKRb          View <a href="https://github.com/msoukup/terminal-sitemap-viewer">this project on GitHub</a>.
-    dZP          qKKb
-   fZP            SMMb
-   HZM            MMMM
-   FqM            MMMM
- __| ".        |\\dS"qML
- |    \`.       | \`' \\Zq
-_)      \\.___.,|     .'
-\\____   )MMMMMP|   .'
-     \`-'       \`--'hjm        To view a list of available commands, type '<a>help</a>'
-</pre>`;
-
+const env = {
+  user: "guest",
+  hostname: window.location.hostname,
+  doc: document.documentElement,
+  output: output,
+  wd: [],
+  files: [],
+  print: (content, error = false) => {
+    const response = document.createElement("p");
+    response.classList.add(error ? "error" : "output");
+    const lines = [
+      ...["<pre>"],
+      ...content.split(),
+      ...["</pre>"]
+    ];
+    response.innerHTML = lines.join("<br />");
+    output.appendChild(response);
+  }
+};
 
 const set_prompt = (elem) => {
-  elem.innerText = `${user}@${hostname}$\u00A0`;
+  elem.innerText = `${env.user}@${env.hostname}$\u00A0`;
 };
 
-const print = (content) => {
-  const response = document.createElement("p");
-  response.classList.add("output");
-  response.innerHTML = content.replace(/\n/g, "<br />");
-  output.appendChild(response);
-};
-
-const exec = async (command) => {
+const print_prompt = (command) => {
 	const prompt_line = document.createElement("p");
 	prompt_line.classList.add("prompt");
-
 	const command_text = document.createElement("span");
 	command_text.classList.add("command");
 	command_text.innerText = command;
-
   set_prompt(prompt_line);
 	prompt_line.appendChild(command_text);
 	output.appendChild(prompt_line);
+};
 
-	const args = command.split(" ");
-	let command_output;
-	if (args[0] in commands) {
-    console.log("Running command with args: " + args);
-		command_output = await commands[args[0]](args);
+const exec = async (command) => {
+  print_prompt(command);
+
+	const argv = command.split(" ");
+	if (argv[0] in commands) {
+    console.log("Running command with argv: " + argv);
+		await commands[argv[0]](env, argv);
 	} else {
-    command_output = args[0] + ": command not found";
-  }
-
-  if (command_output) {
-    print(command_output);
+    env.print(argv[0] + ": command not found", error = true);
   }
 
 	// scrolls to bottom after command is run
@@ -132,6 +120,11 @@ command_input.addEventListener("keydown", (e) => {
 	}
 });
 
-commands.theme(["theme", "monokai"]);
-print(welcome_ascii);
+// Init
+commands.theme(env, ["theme", "monokai"]);
+await commands.load(env, ["load"]);
+commands.welcome(env, ["welcome"]);
 set_prompt(document.getElementById("prompt"));
+
+// TODO replay commands from URL
+
