@@ -2,24 +2,26 @@ import { commands } from "/commands.js";
 
 // Env object is passed to and returned from all commands.
 const output = document.getElementById("terminal-output");
+const print = (content, error = false) => {
+    const response = document.createElement("p");
+    response.classList.add(error ? "error" : "output");
+    const lines = [
+      ...`<pre>${content}`.split(),
+      ...["</pre>"]
+    ];
+    response.innerHTML = lines.join("<br />");
+    output.appendChild(response);
+};
+
 const env = {
   user: "guest",
   hostname: window.location.hostname,
   doc: document.documentElement,
   output: output,
+  stdout: (content) => print(content),
+  stderr: (content) => print(content, true),
   wd: [],
   files: [],
-  print: (content, error = false) => {
-    const response = document.createElement("p");
-    response.classList.add(error ? "error" : "output");
-    const lines = [
-      ...["<pre>"],
-      ...content.split(),
-      ...["</pre>"]
-    ];
-    response.innerHTML = lines.join("<br />");
-    output.appendChild(response);
-  }
 };
 
 const set_prompt = (elem) => {
@@ -45,7 +47,7 @@ const exec = async (command) => {
     console.log("Running command with argv: " + argv);
 		await commands[argv[0]](env, argv);
 	} else {
-    env.print(argv[0] + ": command not found", error = true);
+    env.stderr(argv[0] + ": command not found");
   }
 
 	// scrolls to bottom after command is run
@@ -79,7 +81,7 @@ command_input.addEventListener("keydown", (e) => {
 		command_text.innerHTML = "";
 	} else if (e.ctrlKey && e.key.toLowerCase() === "l") {
 		e.preventDefault();
-		commands.clear("clear");
+		commands.clear(env, "clear");
 	} else if (e.key === "ArrowUp") {
 		command_index = Math.max(0, command_index - 1);
 
