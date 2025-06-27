@@ -1,6 +1,5 @@
 import { commands } from "/commands.js";
 
-// Env object is passed to and returned from all commands.
 const output = document.getElementById("terminal-output");
 const print = (content, error = false) => {
     const response = document.createElement("p");
@@ -13,6 +12,7 @@ const print = (content, error = false) => {
     output.appendChild(response);
 };
 
+// Env object is passed to all commands and mutated in place.
 const env = {
   user: "guest",
   hostname: window.location.hostname,
@@ -21,11 +21,12 @@ const env = {
   stdout: (content) => print(content),
   stderr: (content) => print(content, true),
   wd: [],
-  files: [],
+  root: []
 };
 
 const set_prompt = (elem) => {
-  elem.innerText = `${env.user}@${env.hostname}$\u00A0`;
+  let path = ":/" + env.wd.join("/");
+  elem.innerText = `${env.user}@${env.hostname}${path}$\u00A0`;
 };
 
 const print_prompt = (command) => {
@@ -42,14 +43,19 @@ const print_prompt = (command) => {
 const exec = async (command) => {
   print_prompt(command);
 
-	const argv = command.split(" ");
+	const argv = command.split(" ").map(s => s);
 	if (argv[0] in commands) {
     console.log("Running command with argv: " + argv);
-		await commands[argv[0]](env, argv);
+    try {
+		  await commands[argv[0]](env, argv);
+    } catch(e) {
+      env.stderr(argv[0] + ": " + e.message);
+    }
 	} else {
     env.stderr(argv[0] + ": command not found");
   }
 
+  set_prompt(document.getElementById("prompt"));
 	// scrolls to bottom after command is run
 	document.getElementById("command-input").scrollIntoView({ block: "end" });
 };
@@ -112,8 +118,7 @@ command_input.addEventListener("keydown", (e) => {
 
 		requestAnimationFrame(() => {
 			command_input.setSelectionRange(
-				command_input.value.length,
-				command_input.value.length
+				command_input.value.length, command_input.value.length
 			);
 		});
 
