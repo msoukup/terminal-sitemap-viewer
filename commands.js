@@ -104,9 +104,6 @@ const traverse = (root, path) => {
   throw new Error(`cannot access '${key}': No such file or directory`);
 };
 
-const random_int = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
-
 // Link count is number of subdirs + 2 (one for '.' and one for '..')
 const count_links = (subtree) =>
   Object.values(subtree)
@@ -126,17 +123,33 @@ const format_time_or_year = (date) => {
 
 const format_node = (name, obj) => {
   const is_dir = obj.subtree !== undefined;
-  const umask = is_dir ? "drwxr-xr-x" : "-rw-r--r--";
-  const link_count = is_dir ? count_links(obj.subtree) : 1;
-  const user = "admin";
-  const group = "www-data";
-  const size = is_dir ? 4096 : random_int(1000, 9999);
+  const tr = document.createElement("tr");
+
+  const tdadd = (s, class_name = "ls-stat") => {
+    const td = document.createElement("td");
+    td.classList.add(class_name);
+    td.innerText = s;
+    tr.appendChild(td);
+  };
+
+  // umask
+  tdadd(is_dir ? "drwxr-xr-x" : "-rw-r--r--");
+  // link_count
+  tdadd(is_dir ? count_links(obj.subtree) : 1);
+  // user and group
+  tdadd("admin");
+  tdadd("www-data");
+  // size
+  tdadd(obj.size);
+  // date and time
   const lastmod = obj.lastmod;
-  const month = lastmod.toLocaleString('default', { month: 'short' });
-  const day = lastmod.getDate();
-  const time_or_year = format_time_or_year(lastmod);
-  const name_suffix = is_dir ? "/" : ""
-  return `${umask} ${link_count} ${user} ${group} ${size} ${month} ${day} ${time_or_year} ${name}${name_suffix}`;
+  tdadd(lastmod.toLocaleString('default', { month: 'short' }));
+  tdadd(lastmod.getDate());
+  tdadd(format_time_or_year(lastmod));
+  // name
+  tdadd(name + (is_dir ? "/" : ""), "ls-name");
+
+  return tr;
 }
 
 const ls = (env, argv) => {
@@ -146,11 +159,13 @@ const ls = (env, argv) => {
   const arg = argv.length > 1 ? argv[1] : "";
   const path = arg.split("/").filter(p => p);
   const subtree = traverse(env.root, arg.startsWith("/") ? path : env.wd.concat(path));
-  // Sort lexicographically and format
+  // Sort lexicographically and format in table
+  const table = document.createElement("table");
   const lines = Object.entries(subtree)
     .sort((a, b) => (a[0] < b[0]) ? -1 : 1)
     .map(([name, obj]) => format_node(name, obj))
-  env.stdout(lines.join("\n"));
+    .map(tr => table.appendChild(tr));
+  env.stdout(table.outerHTML);
 };
 
 const cd = (env, argv) => {

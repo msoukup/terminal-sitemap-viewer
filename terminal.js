@@ -4,10 +4,7 @@ const output = document.getElementById("terminal-output");
 const print = (content, error = false) => {
     const response = document.createElement("p");
     response.classList.add(error ? "error" : "output");
-    const lines = [
-      ...`<pre>${content}`.split(),
-      ...["</pre>"]
-    ];
+    const lines = `<pre>${content}</pre>`.split();
     response.innerHTML = lines.join("<br />");
     output.appendChild(response);
 };

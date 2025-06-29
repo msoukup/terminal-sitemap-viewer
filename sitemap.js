@@ -5,17 +5,21 @@ const parse_sitemap_urls = (robots_txt) =>
     .filter(line => line.startsWith("sitemap:"))
     .map(line => line.substring("sitemap:".length).trim());
 
+const random_int = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
+
 const transform_url_element = (e) => {
   const loc_element = e.getElementsByTagName("loc")[0];
   const loc = new URL(loc_element.textContent);
   // Transform to object with element tags to element content.
   const obj = Object.fromEntries(Array.from(e.children, c => [c.tagName, c.textContent]));
-  // Also store path as array and lastmod as date.
+  // Also store path as array, lastmod as date and assign a random size.
   return {
     ...obj,
     ...{
       path: loc.pathname.split("/").filter(s => s),
-      lastmod: obj.lastmod == undefined ? new Date("1970") : new Date(obj.lastmod)
+      lastmod: obj.lastmod == undefined ? new Date("1970") : new Date(obj.lastmod),
+      size: random_int(10, 1024)
     }
   };
 };
@@ -49,7 +53,8 @@ const urls_to_tree = (urls) => {
           subtree: subtree,
           lastmod: Object.values(subtree)
             .map(o => o.lastmod)
-            .reduce((a, b) => (a > b ? a : b), new Date("1970"))
+            .reduce((a, b) => (a > b ? a : b), new Date("1970")),
+          size: 4096
         }
       }
     });
