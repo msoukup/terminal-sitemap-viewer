@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://localhost/example-site/fragment.html</loc>
+    <loc>http://localhost:8000/example-site/fragment.html</loc>
     <lastmod>2005-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/example-site/some-text.txt</loc>
+    <loc>http://localhost:8000/example-site/some-text.txt</loc>
     <lastmod>2010-02-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/example-site/stuff/empty-file</loc>
+    <loc>http://localhost:8000/example-site/stuff/empty-file</loc>
     <lastmod>2011-02-02</lastmod>
     <changefreq>never</changefreq>
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>http://localhost/example-site/stuff/link.html</loc>
+    <loc>http://localhost:8000/example-site/stuff/link.html</loc>
     <lastmod>2011-02-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost/example-site/stuff/nested-stuff/link.html</loc>
+    <loc>http://localhost:8000/example-site/stuff/nested-stuff/link.html</loc>
     <lastmod>2011-05-02</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost/example-site/other-stuff/some-text.txt</loc>
+    <loc>http://localhost:8000/example-site/other-stuff/some-text.txt</loc>
     <lastmod>2011-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

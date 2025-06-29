@@ -6,7 +6,7 @@ Code is derived from https://github.com/jonathanmlowery/terminal-website[this pr
 
 == Development Server
 
-Serve files locally from root directory. For instance:
+Serve files locally from root directory at port 8000:
 
 [source,bash]
 ----
