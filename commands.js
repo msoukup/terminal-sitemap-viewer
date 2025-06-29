@@ -2,9 +2,8 @@ import { sitemap } from "/sitemap.js";
 
 const robots_default_url = "robots.txt";
 
-// Load sitemap(s) through a robots.txt
 const load = async (env, argv) => {
-  if (argv > 2) {
+  if (argv.length > 2) {
     throw new Error("Too many arguments");
   }
 
@@ -130,7 +129,7 @@ const format_node = (name, obj) => {
 }
 
 const ls = (env, argv) => {
-  if (argv > 2) {
+  if (argv.length > 2) {
     throw new Error("Too many arguments");
   }
   const arg = argv.length > 1 ? argv[1] : "";
@@ -144,7 +143,7 @@ const ls = (env, argv) => {
 };
 
 const cd = (env, argv) => {
-  if (argv > 2) {
+  if (argv.length > 2) {
     throw new Error("Too many arguments");
   }
   const arg = argv.length > 1 ? argv[1] : "/";
@@ -164,6 +163,33 @@ const cd = (env, argv) => {
   console.log(env);
 };
 
+const show = async (env, argv) => {
+  if (argv.length < 2) {
+    throw new Error("Too few arguments");
+  }
+
+  const entries = argv.slice(1)
+    .map(arg => {
+      const path = arg.split("/").filter(p => p);
+      return traverse(env.root, arg.startsWith("/") ? path : env.wd.concat(path));
+    })
+    .map(Object.entries)
+    .flat()
+    .filter(([name, obj]) => obj.hasOwnProperty("loc"))
+
+  for (const [name, obj] of entries) {
+    await fetch(obj.loc)
+      .then(response => response.text())
+      .then(content => {
+        // If showing multiple files, prefix with filename
+        if (entries.length > 1) {
+          env.stdout(name + ":");
+        }
+        env.stdout(content);
+      });
+  }
+};
+
 
 const theme = (env, argv) => {
 	env.doc.className = `theme-${argv[1]}`;
@@ -178,11 +204,12 @@ const fontsize = (env, argv) => {
 
 const help = (env, argv) => {
   env.stdout([
-    "  <a>load</a>                 load sitemaps from robot.txt",
+    "  <a>help</a>                 display this message",
     "  <a>ls</a>                   list files and directories",
     "  <a>cd</a>                   change directory",
+    "  <a>show [FILE]</a>          print file to terminal output",
+    "  <a>load</a>                 load sitemaps from robot.txt",
     "  <a>welcome</a>              display welcome message",
-    "  <a>help</a>                 display this message",
     "  <a>theme [NAME]</a>         change terminal theme (monokai, synthwave, dracula, matrix, solarized)",
     "  <a>fontsize [PIXELS]</a>    change the terminal text size",
     "  <a>clear</a>                clear previous terminal output"
@@ -193,4 +220,4 @@ const clear = (env, argv) => {
   env.output.innerHTML = "";
 };
 
-export const commands = { load, ls, cd, welcome, theme, fontsize, help, clear };
+export const commands = { help, ls, cd, show, load, welcome, theme, fontsize, clear };
