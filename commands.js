@@ -26,7 +26,7 @@ const load = async (env, argv) => {
   };
 
   env.stdout(`Fetching ${robots_url}...`);
-  const url_lists = await fetch(robots_url)
+  const url_lists = await fetch(robots_url, {cache: "no-store"})
     .then(response => response.text())
     .then(sitemap.parse_sitemap_urls)
     .then(sitemap_urls => {
@@ -35,7 +35,7 @@ const load = async (env, argv) => {
         .map(warn_url_hostname_mismatch)
         .map(sitemap_url => {
           env.stdout(`Fetching sitemap at ${sitemap_url}...`);
-          return fetch(sitemap_url)
+          return fetch(sitemap_url, {cache: "no-store"})
             .then(response => response.text())
             .then(sitemap.parse_sitemap)
         });
@@ -113,19 +113,30 @@ const count_links = (subtree) =>
     .reduce((total, obj) => total + (obj.subtree !== undefined ? 1 : 0), 2)
 ;
 
+const format_time_or_year = (date) => {
+  const now = new Date();
+  if (now.getFullYear() > date.getFullYear()) {
+    return String(date.getFullYear());
+  } else {
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+};
+
 const format_node = (name, obj) => {
   const is_dir = obj.subtree !== undefined;
   const umask = is_dir ? "drwxr-xr-x" : "-rw-r--r--";
   const link_count = is_dir ? count_links(obj.subtree) : 1;
-  const user = "michael";
-  const group = "michael";
+  const user = "admin";
+  const group = "www-data";
   const size = is_dir ? 4096 : random_int(1000, 9999);
-  // TODO date and time
-  const month = "Jun";
-  const day = 26;
-  const time = "13:25";
+  const lastmod = obj.lastmod;
+  const month = lastmod.toLocaleString('default', { month: 'short' });
+  const day = lastmod.getDate();
+  const time_or_year = format_time_or_year(lastmod);
   const name_suffix = is_dir ? "/" : ""
-  return `${umask} ${link_count} ${user} ${group} ${size} ${month} ${day} ${time} ${name}${name_suffix}`;
+  return `${umask} ${link_count} ${user} ${group} ${size} ${month} ${day} ${time_or_year} ${name}${name_suffix}`;
 }
 
 const ls = (env, argv) => {

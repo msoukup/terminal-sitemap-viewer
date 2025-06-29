@@ -8,10 +8,15 @@ const parse_sitemap_urls = (robots_txt) =>
 const transform_url_element = (e) => {
   const loc_element = e.getElementsByTagName("loc")[0];
   const loc = new URL(loc_element.textContent);
-  // Store path as array along with element tags to element content
+  // Transform to object with element tags to element content.
+  const obj = Object.fromEntries(Array.from(e.children, c => [c.tagName, c.textContent]));
+  // Also store path as array and lastmod as date.
   return {
-    ...{path: loc.pathname.split("/").filter(s => s)},
-    ...Object.fromEntries(Array.from(e.children, c => [c.tagName, c.textContent]))
+    ...obj,
+    ...{
+      path: loc.pathname.split("/").filter(s => s),
+      lastmod: obj.lastmod == undefined ? new Date("1970") : new Date(obj.lastmod)
+    }
   };
 };
 
@@ -41,7 +46,10 @@ const urls_to_tree = (urls) => {
       })))
       return {
         [name]: {
-          subtree: subtree
+          subtree: subtree,
+          lastmod: Object.values(subtree)
+            .map(o => o.lastmod)
+            .reduce((a, b) => (a > b ? a : b), new Date("1970"))
         }
       }
     });
