@@ -79,7 +79,7 @@ const welcome = (env, argv) => {
     `Welcome to ${env.hostname}!`,
     `This is an interactive sitemap viewer built with plain HTML, CSS and JS.`,
     ``,
-    `View <a href="https://github.com/msoukup/terminal-sitemap-viewer">this project on GitHub</a>`,
+    `View <a href="https://github.com/msoukup/terminal-sitemap-viewer" target="_blank">this project on GitHub</a>`,
     ``,
     `To view a list of available commands, type '<a>help</a>'`
   ].join("\n"));
@@ -123,31 +123,53 @@ const format_time_or_year = (date) => {
 
 const format_node = (name, obj) => {
   const is_dir = obj.subtree !== undefined;
+  const is_link = obj["x:link"] !== undefined;
   const tr = document.createElement("tr");
 
   const tdadd = (s, class_name = "ls-stat") => {
     const td = document.createElement("td");
     td.classList.add(class_name);
-    td.innerText = s;
+    td.innerHTML = s;
     tr.appendChild(td);
   };
 
+  const format_name = () => {
+    if (is_dir) {
+      return `${name}/`
+    } else if (is_link) {
+      const link = obj["x:link"];
+      return `${name} -&gt <a href="${link}" target="_blank">${link}</a>`
+    } else {
+      return name
+    }
+  };
+
+  const format_umask = () => {
+    if (is_dir) {
+      return "drwxr-xr-x"
+    } else if (is_link) {
+      return "lrwxr-xr-x"
+    } else {
+      return "-rw-r--r--"
+    }
+  };
+
   // umask
-  tdadd(is_dir ? "drwxr-xr-x" : "-rw-r--r--");
+  tdadd(format_umask());
   // link_count
   tdadd(is_dir ? count_links(obj.subtree) : 1);
   // user and group
   tdadd("admin");
   tdadd("www-data");
   // size
-  tdadd(obj.size);
+  tdadd(obj["x:size"] || obj.size);
   // date and time
   const lastmod = obj.lastmod;
   tdadd(lastmod.toLocaleString('default', { month: 'short' }));
   tdadd(lastmod.getDate());
   tdadd(format_time_or_year(lastmod));
   // name
-  tdadd(name + (is_dir ? "/" : ""), "ls-name");
+  tdadd(format_name(), "ls-name");
 
   return tr;
 }
@@ -189,7 +211,7 @@ const cd = (env, argv) => {
   console.log(env);
 };
 
-const show = async (env, argv) => {
+const cat = async (env, argv) => {
   if (argv.length < 2) {
     throw new Error("Too few arguments");
   }
@@ -207,10 +229,6 @@ const show = async (env, argv) => {
     await fetch(obj.loc)
       .then(response => response.text())
       .then(content => {
-        // If showing multiple files, prefix with filename
-        if (entries.length > 1) {
-          env.stdout(name + ":");
-        }
         env.stdout(content);
       });
   }
@@ -222,6 +240,9 @@ const theme = (env, argv) => {
 };
 
 const fontsize = (env, argv) => {
+  if (argv.length < 2) {
+    throw new Error("Too few arguments");
+  }
 	env.doc.style.setProperty(
 		"--terminal-font-size",
 		`${argv[1]}px`
@@ -231,13 +252,13 @@ const fontsize = (env, argv) => {
 const help = (env, argv) => {
   env.stdout([
     "  <a>help</a>                 display this message",
-    "  <a>ls</a>                   list files and directories",
-    "  <a>cd</a>                   change directory",
-    "  <a>show [FILE]</a>          print file to terminal output",
-    "  <a>load</a>                 load sitemaps from robot.txt",
+    "  <a>ls [PATH]</a>            list files and directories",
+    "  <a>cd [PATH]</a>            change directory",
+    "  <a>cat FILE</a>             print file to terminal output",
+    "  <a>load [URL]</a>           load sitemaps from a robot.txt",
     "  <a>welcome</a>              display welcome message",
-    "  <a>theme [NAME]</a>         change terminal theme (monokai, synthwave, dracula, matrix, solarized)",
-    "  <a>fontsize [PIXELS]</a>    change the terminal text size",
+    "  <a>theme NAME</a>           change terminal theme (monokai, synthwave, dracula, matrix, solarized)",
+    "  <a>fontsize PIXELS</a>      change the terminal text size",
     "  <a>clear</a>                clear previous terminal output"
   ].join("\n"));
 };
@@ -246,4 +267,4 @@ const clear = (env, argv) => {
   env.output.innerHTML = "";
 };
 
-export const commands = { help, ls, cd, show, load, welcome, theme, fontsize, clear };
+export const commands = { help, ls, cd, cat, load, welcome, theme, fontsize, clear };
