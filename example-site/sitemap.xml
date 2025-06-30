@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:x="terminal-sitemap-viewer">
+  <url>
+    <loc>http://localhost:8000/example-site/fragment.html</loc>
+    <lastmod>2025-06-29T13:37:10</lastmod>
+    <x:size>111</x:size>
+  </url>
+  <url>
+    <loc>http://localhost:8000/example-site/some-text.txt</loc>
+    <lastmod>2010-02-02</lastmod>
+    <x:size>34</x:size>
+  </url>
+  <url>
+    <loc>http://localhost:8000/example-site/link.html</loc>
+    <lastmod>2020-10-28</lastmod>
+    <x:link>https://example.com</x:link>
+  </url>
+  <url>
+    <loc>http://localhost:8000/example-site/stuff/empty-file</loc>
+    <lastmod>2011-02-02</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:8000/example-site/stuff/link.html</loc>
+    <lastmod>2011-02-02</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:8000/example-site/stuff/nested-stuff/link.html</loc>
+    <lastmod>2011-05-02</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:8000/example-site/other-stuff/some-text.txt</loc>
+    <lastmod>2011-08-02</lastmod>
+  </url>
+</urlset> 

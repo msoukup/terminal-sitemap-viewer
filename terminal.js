@@ -1,37 +1,58 @@
 import { commands } from "/commands.js";
 
 const output = document.getElementById("terminal-output");
+const print = (content, error = false) => {
+    const response = document.createElement("p");
+    response.classList.add(error ? "error" : "output");
+    const lines = `<pre>${content}</pre>`.split();
+    response.innerHTML = lines.join("<br />");
+    output.appendChild(response);
+};
 
-const exec_command = (command) => {
+// Env object is passed to all commands and mutated in place.
+const env = {
+  user: "guest",
+  hostname: window.location.hostname,
+  doc: document.documentElement,
+  output: output,
+  stdout: (content) => print(content),
+  stderr: (content) => print(content, true),
+  wd: [],
+  root: []
+};
+
+const set_prompt = (elem) => {
+  let path = ":/" + env.wd.join("/");
+  elem.innerText = `${env.user}@${env.hostname}${path}$\u00A0`;
+};
+
+const print_prompt = (command) => {
 	const prompt_line = document.createElement("p");
 	prompt_line.classList.add("prompt");
-
 	const command_text = document.createElement("span");
 	command_text.classList.add("command");
 	command_text.innerText = command;
-
-	prompt_line.innerText = "user@jonathanmlowery.com$\u00A0";
+  set_prompt(prompt_line);
 	prompt_line.appendChild(command_text);
 	output.appendChild(prompt_line);
+};
 
-	const args = command.split(" ");
+const exec = async (command) => {
+  print_prompt(command);
 
-	const response = document.createElement("p");
-	let command_output;
+	const argv = command.split(" ").map(s => s);
+	if (argv[0] in commands) {
+    console.log("Running command with argv: " + argv);
+    try {
+		  await commands[argv[0]](env, argv);
+    } catch(e) {
+      env.stderr(argv[0] + ": " + e.message);
+    }
+	} else {
+    env.stderr(argv[0] + ": command not found");
+  }
 
-	if (args[0] in commands) {
-		command_output = commands[args[0]](args);
-	}
-
-	console.log(command_output);
-
-	if (command_output) {
-		response.classList.add("output");
-		response.innerHTML = command_output.replace(/\n/g, "<br />");
-
-		output.appendChild(response);
-	}
-
+  set_prompt(document.getElementById("prompt"));
 	// scrolls to bottom after command is run
 	document.getElementById("command-input").scrollIntoView({ block: "end" });
 };
@@ -52,7 +73,7 @@ let command_index = 1;
 command_input.addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {
 		e.preventDefault();
-		exec_command(command_input.value);
+		exec(command_input.value);
 
 		if (command_input.value) {
 			command_history.push(command_input.value);
@@ -63,7 +84,7 @@ command_input.addEventListener("keydown", (e) => {
 		command_text.innerHTML = "";
 	} else if (e.ctrlKey && e.key.toLowerCase() === "l") {
 		e.preventDefault();
-		commands.clear("clear");
+		commands.clear(env, "clear");
 	} else if (e.key === "ArrowUp") {
 		command_index = Math.max(0, command_index - 1);
 
@@ -94,8 +115,7 @@ command_input.addEventListener("keydown", (e) => {
 
 		requestAnimationFrame(() => {
 			command_input.setSelectionRange(
-				command_input.value.length,
-				command_input.value.length
+				command_input.value.length, command_input.value.length
 			);
 		});
 
@@ -104,15 +124,11 @@ command_input.addEventListener("keydown", (e) => {
 	}
 });
 
-commands.theme(["theme", "monokai"]);
+// Init
+commands.theme(env, ["theme", "monokai"]);
+await commands.load(env, ["load"]);
+commands.welcome(env, ["welcome"]);
+set_prompt(document.getElementById("prompt"));
 
-const response = document.createElement("p");
-let command_output;
-command_output = commands.welcome(["welcome"]);
+// TODO replay commands from URL
 
-if (command_output) {
-	response.classList.add("output");
-	response.innerHTML = command_output.replace(/\n/g, "<br />");
-
-	output.appendChild(response);
-}

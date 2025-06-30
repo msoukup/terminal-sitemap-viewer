@@ -1,0 +1,33 @@
+= Terminal Sitemap Viewer
+
+Interactive terminal sitemap viewer built with plain HTML, CSS and JS.
+Code is derived from https://github.com/jonathanmlowery/terminal-website[this project by `jonathanmlowery`].
+
+
+== Description
+
+The terminal mimics a bot crawling the site,
+loading sitemaps from a `robots.txt` file.
+The set of URLs listed in the sitemaps are represented as a file system
+and may be browsed through a limited set of standard Unix commands.
+
+=== Sitemap Format
+
+The sitemap must follow the
+https://www.sitemaps.org/protocol.html[XML format for the sitemap protocol].
+Only the `<loc>` tag is required
+and the optional `<lastmod>` tag is used when listing files.
+
+In addition, this project defines the following extensions:
+
+`x:link`:: Indicates that the URL represents a link to another site and is displayed as a symlink.
+`x:size`:: Set the size of the document pointed to by the URL.
+
+== Development Server
+
+Serve files locally from root directory at port 8000:
+
+[source,bash]
+----
+$ python -m http.server
+----
